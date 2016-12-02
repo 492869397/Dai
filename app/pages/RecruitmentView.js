@@ -15,26 +15,27 @@ export default class RecruitmentView extends Component {
         super(props);
         this.state = {
             recruitment: this.props.recruitment,
-        }
+        };
     }
 
     render() {
         let texts = [];
-        for (let i = 0; i < this.props.recruitment.count - 1; i += 2) {
-            texts.push(<View style={styles.textView}>
-                    <Text style={styles.contentText}>{i+'.'+this.props.recruitment[i]}</Text>
-                    <Text style={styles.contentText}>{i+'.'+this.props.recruitment[i+1]}</Text>
+        for (let i = 0; i < this.props.recruitment.length - 1; i += 2) {
+            texts.push(
+                <View style={styles.textView} key={i/2}>
+                    <Text style={styles.contentText}>{i+1+'.'+this.props.recruitment[i]}</Text>
+                    <Text style={styles.contentText}>{i+2+'.'+this.props.recruitment[i+1]}</Text>
                 </View>);
         }
-        console.log(texts.count);
-        return(<View>
-            <View style={styles.head}>
-                <Text>公司领导莅临尚学堂专场招聘</Text>
-            </View>
-            <View style={styles.contentContainer}>
-                {texts}
-            </View>
-        </View>)
+        return(
+            <View>
+                <View style={styles.head}>
+                    <Text>公司领导莅临尚学堂专场招聘</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                    {texts}
+                </View>
+            </View>);
     }
 }
 

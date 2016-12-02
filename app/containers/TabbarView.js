@@ -16,11 +16,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import Home from './Home';
 import SecondView from './SecondView';
+import HomeHeader from '../pages/HomeHeader';
 
 
 const tabbarItems = [
     {title:'主页', component:Home , icon:'ios-home'},
-    {title:'第二页',component:SecondView, icon:'ios-albums'}
+    {title:'第二页',component:SecondView, icon:'ios-albums'},
     ];
 
 export default class TabbarView extends Component{

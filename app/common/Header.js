@@ -20,7 +20,7 @@ import Util from './Utils';
 // import { toastShort } from '../common/ToastUtil';
 
 
-
+//左右按钮较多时应使用leftIcons = {icon:'back',action:()=>{} key:''}
 
 export default class Header extends React.Component {
     constructor(props) {
@@ -35,39 +35,43 @@ export default class Header extends React.Component {
     }
 
     render() {
+        let leftView = [];
+        let rightView = [];
         let NavigationBar = [];
         // 左边图片按钮
         if (this.props.leftIcon != undefined) {
-            NavigationBar.push(
-                <TouchableOpacity
-                    key={'leftIcon'}
-                    activeOpacity={0.75}
-                    style={styles.leftIcon}
-                    onPress={this.props.leftIconAction}
-                >
-                    <Icon color="orange" size={30} name={this.props.leftIcon}/>
-                </TouchableOpacity>
-            )
+            if(this.props.leftIcon instanceof Array){
+                this.props.leftIcon.map((icon)=> {
+                    leftView.push(
+                        <TouchableOpacity
+                            key={icon.key}
+                            activeOpacity={0.75}
+                            style={styles.leftIcon}
+                            onPress={icon.action}
+                        >
+                            <Icon color="white" size={20} name={icon.icon}/>
+                        </TouchableOpacity>)
+                });
+            }else{
+                leftView.push(
+                    <TouchableOpacity
+                        key={this.props.leftIcon.key}
+                        activeOpacity={0.75}
+                        style={styles.leftIcon}
+                        onPress={this.props.leftIcon.action}
+                    >
+                        <Icon color="orange" size={20} name={this.props.leftIcon.icon}/>
+                    </TouchableOpacity>
+                )
+            }
         }
+        
 
-        // 在 更多设置 界面导航左边的 收藏collect 按钮，显示收藏界面
-        if (this.props.leftCollectIcon != undefined) {
-            NavigationBar.push(
-                <TouchableOpacity
-                    key={'leftCollectIcon'}
-                    activeOpacity={0.75}
-                    style={styles.leftCollectIcon}
-                    onPress={this.props.showCollectedIconAction}
-                >
-                    <Icon color="orange" size={20} name={this.props.leftCollectIcon}/>
-                </TouchableOpacity>
-            )
-        }
-
+       
         // 标题
         if (this.props.title != undefined) {
             NavigationBar.push(
-                <Text key={'title'} style={styles.title}>{this.props.title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' key='title' style={styles.title}>{this.props.title}</Text>
             )
         }
 
@@ -83,49 +87,42 @@ export default class Header extends React.Component {
 
         // 右边图片 收藏按钮 collect
         if (this.props.rightIcon != undefined) {
-            this._getCollectedData();
-            console.log('rightIcon----------------' + this.props.rightIcon);
-            let iconColor = (this.state.collectState == 1) ? 'orange' : 'lightgray';
-            NavigationBar.push(
-                <TouchableOpacity
-                    key={'rightIcon'}
-                    activeOpacity={0.75}
-                    style={styles.rightIcon}
-                    onPress={this._collectArticle.bind(this,this.state.collectState, this.state.pageID)}
-                >
-                    <Icon color={iconColor}  size={20} name={this.props.rightIcon}/>
-                </TouchableOpacity>
-            )
+            if(this.props.leftIcon instanceof Array){
+                this.props.rightIcon.map((icon)=> {
+                    rightView.push(
+                        <TouchableOpacity
+                            key={icon.key}
+                            activeOpacity={0.75}
+                            style={styles.rightIcon}
+                            onPress={icon.action}
+                        >
+                            <Icon color="orange" size={20} name={icon.icon}/>
+                        </TouchableOpacity>)
+                });
+            }else{
+                rightView.push(
+                    <TouchableOpacity
+                        key={this.props.rightIcon.key}
+                        activeOpacity={0.75}
+                        style={styles.rightIcon}
+                        onPress={this.props.rightIcon.action}
+                    >
+                        <Icon color='orange'  size={20} name={this.props.rightIcon.icon}/>
+                    </TouchableOpacity>
+                );
+            }
+
         }
-
-
-        // 右边 刷新界面 按钮
-        if (this.props.rightRepeatIcon != undefined) {
-            NavigationBar.push(
-                <TouchableOpacity
-                    key={'rightRepeatIcon'}
-                    activeOpacity={0.75}
-                    style={styles.rightIcon}
-                    onPress={this.props.rightRepeatAction}
-                >
-                    <Icon color='orange'  size={20} name={this.props.rightRepeatIcon}/>
-                </TouchableOpacity>
-            )
-        }
-
-
-
-
-
-
-
-
+        
+console.log('重回header');
 
         return (
             <View style={styles.container}>
             <View style={styles.top} />
             <View style={styles.navigationBarContainer}>
-                {NavigationBar}
+                <View style={styles.leftView}>{leftView}</View>
+                <View style={styles.middleView}>{NavigationBar}</View>
+                <View style={styles.rightView}>{rightView}</View>
             </View>
             </View>
         )
@@ -143,32 +140,56 @@ const styles = StyleSheet.create({
         marginTop: 0,
         flexDirection: 'row',
         height: 44,
-        justifyContent: 'center',
+        flex:1,
         alignItems: 'center',
         borderBottomColor: 'lightgray',
         borderBottomWidth: 1.0,
-        // backgroundColor: 'rgb(100,100,100)',
     },
-
+    leftView:{
+        flexDirection:'row',
+        marginLeft:0,
+        justifyContent:'flex-start',
+        flex:1,
+    },
+    middleView:{
+        flexDirection:'row',
+        // width:Common.window.width-150,
+        flex:2,
+        justifyContent:'center',
+        marginLeft:5,
+        marginRight:5,
+    },
+    rightView:{
+        marginRight:0,
+        flexDirection:'row',
+        flex:1,
+        justifyContent:'flex-end',
+    },
     title: {
-        fontSize: 15,
-        marginLeft: 15,
+        fontSize: 17,
+        margin:0,
+        flex:1,
+        textAlign:'center',
     },
     titleView: {
         fontSize: 15,
         color: 'darkorange',
     },
     leftIcon: {
-        left: -Common.window.width/2+40,
+        marginLeft: 5,
+        width:30,
+        height:30,
+        justifyContent:'center',
+        alignItems:'center',
     },
-
     rightIcon: {
-        left: Common.window.width/2-50,
+        marginRight: 5,
+        width:30,
+        height:30,
+        justifyContent:'center',
+        alignItems:'center',
     },
-    leftCollectIcon: {
-        left: -Common.window.width/2+60,
-
-    }
 })
+
 // onPress={this.props.rightIconAction}
 // <Icon color="orange" size={20} name={this.props.rightIcon}/>

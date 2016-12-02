@@ -20,7 +20,7 @@ export default class App extends Component{
                 initialRoute={{name:'TabbarView',component:TabbarView}}
                 renderScene={(route,navigator)=>{
                     let Com = route.component;
-                    return <Com {...route.prams} navigator={navigator} />;
+                    return <Com {...route.param} navigator={navigator} />;
                 }}
                 configureScene={(route,routeStack)=>Navigator.SceneConfigs.HorizontalSwipeJumpFromRight}
             />
