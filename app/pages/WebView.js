@@ -28,9 +28,6 @@ export default class WebViewPage extends Component{
             {icon:"close",
                 action:()=>{
                     this.webview.goBack();
-                    this.setState({
-                        webIndex:this.state.webIndex-1,
-                    })
                 },
                 key:'leftIcon2'}];
         return(
